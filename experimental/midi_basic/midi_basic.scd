@@ -1,33 +1,3 @@
-s.boot;
-
-().play;
-
-(
-
-SynthDef(\polytest01,{|freq=440,gate=1,amp=0.5|
-
-   var sig, env;
-
-   sig = LFPulse.ar( freq, 1/2, 1/2 );
-   env = EnvGen.kr( Env.asr(1/100,1/10), gate, doneAction: 2 );
-
-   Out.ar( 0, amp * sig * env );
-
-}).add;
-
-SynthDef(\polytest02,{|freq=440,gate=1,amp=0.5|
-
-   var sig, env;
-
-   sig = LFPulse.ar( Line.kr(1,0.1,1/113) * (freq*10), 1/16, 1/6 );
-   env = EnvGen.kr( Env.perc(1/100,1/3), doneAction: 2 );
-
-   Out.ar( 0, amp * sig * env );
-
-}).add;
-
-)
-
 (
 
 var notes, on, off;
@@ -35,7 +5,7 @@ var polysynth;
 var funcs;
 
 MIDIClient.init;
-MIDIIn.connectAll;
+/*MIDIIn.connectAll;*/
 
 funcs = Dictionary.new();
 
@@ -44,19 +14,51 @@ polysynth[0] = {|synth, num, velocity| notes[num] = Synth(synth, [\freq, num.mid
    \amp, velocity / 127 ]); };
 polysynth[1] = {|synth, num, velocity| notes[num].release; };
 
-
-notes = Array.newClear(128);    // array has one slot per possible MIDI note
+notes = Dictionary.new();    // array has one slot per possible MIDI note
 
 on = MIDIFunc.noteOn({ |velocity, num, chan, src|
 
    switch ( chan,
 
    	0,   {
-         polysynth[0].value(\polytest01, num, velocity );
+         notes.postln; if(notes.includesKey(num.asSymbol), { notes[num].free;  },{ polysynth[0].value(\polytest01, num, velocity )});
       },
 
       9,   {
-         polysynth[0].value(\polytest02, num - 12, velocity );
+         switch( num,
+            36, {
+
+               polysynth[0].value(\drumtest01, num, velocity );
+            },
+            37, {
+
+               polysynth[0].value(\drumtest02, num, velocity );
+            },
+            38, {
+
+               polysynth[0].value(\drumtest03, num, velocity );
+            },
+            39, {
+
+               polysynth[0].value(\drumtest04, num, velocity );
+            },
+            40, {
+
+               polysynth[0].value(\drumtest05, num, velocity );
+            },
+            41, {
+
+               polysynth[0].value(\drumtest06, num, velocity );
+            },
+            42, {
+
+               polysynth[0].value(\drumtest07, num, velocity );
+            },
+            43, {
+
+               polysynth[0].value(\drumtest08, num, velocity );
+            }
+         );
       }
 
    );
@@ -76,7 +78,7 @@ off = MIDIFunc.noteOff({ |velocity, num, chan, src|
       },
 
       9,   {
-         polysynth[1].value(\polytest02, num - 12, velocity);
+         // no noteoff for sampler ?
       }
 
    );
@@ -87,6 +89,3 @@ off = MIDIFunc.noteOff({ |velocity, num, chan, src|
 });
 
 )
-
-// when done:
-q.value;
