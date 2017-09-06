@@ -104,5 +104,8 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 ~player1["instruments"][0]["currentInstrument"]=0;
 ~player1["instruments"][0]["currentInstrument"]=1;
 
+~player1["instruments"][1]["currentInstrument"]=0;
+~player1["instruments"][1]["currentInstrument"]=1;
+
 
 */
