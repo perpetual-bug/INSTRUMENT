@@ -90,3 +90,12 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 });
 
 )
+
+
+
+/*
+
+*/
+
+~player1["currentInstrument"]=0;
+~player1["currentInstrument"]=1;
