@@ -10,6 +10,7 @@ on = MIDIFunc.noteOn({ |velocity, num, chan, src|
 
    var currentPlayer;
    var currentInstrument;
+   var currentInstrumentChannel;
    var synthdef;
 
    /*[velocity, num, chan, src].postln;*/
@@ -20,9 +21,10 @@ on = MIDIFunc.noteOn({ |velocity, num, chan, src|
       }
    );
 
-   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+   currentInstrumentChannel = currentPlayer["instruments"][chan];
+   currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
    synthdef = currentInstrument["synthdef"];
-
+   synthdef.postln;
    currentInstrument["functions"][0].value(synthdef,num,velocity);
 
 });
@@ -31,6 +33,7 @@ on = MIDIFunc.noteOn({ |velocity, num, chan, src|
 off = MIDIFunc.noteOff({ |velocity, num, chan, src|
    var currentPlayer;
    var currentInstrument;
+   var currentInstrumentChannel;
    var synthdef;
 
    /*[velocity, num, chan, src].postln;*/
@@ -41,7 +44,8 @@ off = MIDIFunc.noteOff({ |velocity, num, chan, src|
       }
    );
 
-   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+   currentInstrumentChannel = currentPlayer["instruments"][chan];
+   currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 
    currentInstrument["functions"][1].value(num);
 
@@ -49,6 +53,7 @@ off = MIDIFunc.noteOff({ |velocity, num, chan, src|
 
 cc = MIDIFunc.cc({ |value, num, chan, src|
    var currentPlayer;
+   var currentInstrumentChannel;
    var currentInstrument;
    var synthdef;
 
@@ -70,7 +75,8 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 
    parameterIndex = ((num - startOffset)*2).postln;
 
-   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+   currentInstrumentChannel = currentPlayer["instruments"][chan];
+   currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 
 
    currentInstrument["parameters"][parameterIndex + 1] = value / 127;
@@ -78,7 +84,7 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
    parameters = currentInstrument["parameters"];
 
 
-   currentPlayer["notes"].collect({|i|
+   currentInstrument["notes"].collect({|i|
       i.set(parameters[0],parameters[1]);
       i.set(parameters[2],parameters[3]);
       i.set(parameters[4],parameters[5]);
@@ -95,7 +101,8 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 
 /*
 
-*/
+~player1["instruments"][0]["currentInstrument"]=0;
+~player1["instruments"][0]["currentInstrument"]=1;
 
-~player1["currentInstrument"]=0;
-~player1["currentInstrument"]=1;
+
+*/

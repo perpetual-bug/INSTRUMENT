@@ -10,19 +10,19 @@
 
       newPlayer = Dictionary.new();
       newPlayer["name"] = name;
-      newPlayer["instruments"] = List.new();
-      newPlayer["notes"] = Dictionary.new();
-      newPlayer["currentInstrument"] = 0;
+      newPlayer["instruments"] = Dictionary.new();
 
       newPlayer["createInstrument"] = {|name, synthdef, parameters, functions|
 
          var newInstrument;
-
          newInstrument = Dictionary.new();
+
          newInstrument["name"] = name;
          newInstrument["synthdef"] = synthdef;
          newInstrument["parameters"] = parameters;
          newInstrument["functions"] = functions;
+
+         newInstrument["notes"] = Dictionary.new();
 
          newInstrument;
 

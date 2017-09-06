@@ -8,7 +8,10 @@
 
 }.value();
 
-~player1["instruments"].add(
+~player1["instruments"][0] = Dictionary.new();
+~player1["instruments"][0]["currentInstrument"] = 0;
+
+~player1["instruments"][0].put(0,
    ~player1["createInstrument"].value(
       "instrument_01",
       \pwm_synth,
@@ -21,7 +24,8 @@
       [
          {|synthdef, num, velocity|
 
-            var currentInstrument = ~player1["instruments"][~player1["currentInstrument"]];
+            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             var parameters;
 
             parameters = [
@@ -32,19 +36,21 @@
                currentInstrument["parameters"][6], currentInstrument["parameters"][7]
             ];
 
-
-            ~player1["notes"][num] = Synth(synthdef, parameters);
-
-
+            currentInstrument["notes"][num] = Synth(synthdef, parameters);
 
          },
-         {|num| ~player1["notes"][num].release; }
+         {|num|
+            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+            currentInstrument["notes"][num].release;
+         }
       ]
    )
 );
 
 
-~player1["instruments"].add(
+
+~player1["instruments"][0].put(1,
    ~player1["createInstrument"].value(
       "instrument_02",
       \sinosc_synth,
@@ -57,7 +63,8 @@
       [
          {|synthdef, num, velocity|
 
-            var currentInstrument = ~player1["instruments"][~player1["currentInstrument"]];
+            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             var parameters;
 
             parameters = [
@@ -69,12 +76,16 @@
             ];
 
 
-            ~player1["notes"][num] = Synth(synthdef, parameters);
+            currentInstrument["notes"][num] = Synth(synthdef, parameters);
 
 
 
          },
-         {|num| ~player1["notes"][num].release; }
+         {|num|
+            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+            currentInstrument["notes"][num].release;
+         }
       ]
    )
 );
