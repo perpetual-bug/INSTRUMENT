@@ -1,90 +1,91 @@
 (
 
-var notes, on, off;
-var polysynth;
-var funcs;
+
+var on, off, cc;
 
 MIDIClient.init;
-/*MIDIIn.connectAll;*/
 
-funcs = Dictionary.new();
-
-polysynth = Array.newClear(2);
-polysynth[0] = {|synth, num, velocity| notes[num] = Synth(synth, [\freq, num.midicps,
-   \amp, velocity / 127 ]); };
-polysynth[1] = {|synth, num, velocity| notes[num].release; };
-
-notes = Dictionary.new();    // array has one slot per possible MIDI note
 
 on = MIDIFunc.noteOn({ |velocity, num, chan, src|
 
-   switch ( chan,
+   var currentPlayer;
+   var currentInstrument;
+   var synthdef;
 
-   	0,   {
-         notes.postln; if(notes.includesKey(num.asSymbol), { notes[num].free;  },{ polysynth[0].value(\polytest01, num, velocity )});
-      },
+   /*[velocity, num, chan, src].postln;*/
 
-      9,   {
-         switch( num,
-            36, {
-
-               polysynth[0].value(\drumtest01, num, velocity );
-            },
-            37, {
-
-               polysynth[0].value(\drumtest02, num, velocity );
-            },
-            38, {
-
-               polysynth[0].value(\drumtest03, num, velocity );
-            },
-            39, {
-
-               polysynth[0].value(\drumtest04, num, velocity );
-            },
-            40, {
-
-               polysynth[0].value(\drumtest05, num, velocity );
-            },
-            41, {
-
-               polysynth[0].value(\drumtest06, num, velocity );
-            },
-            42, {
-
-               polysynth[0].value(\drumtest07, num, velocity );
-            },
-            43, {
-
-               polysynth[0].value(\drumtest08, num, velocity );
-            }
-         );
+   switch(src,
+      1310720, {
+         currentPlayer = ~player1;
       }
-
    );
 
+   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+   synthdef = currentInstrument["synthdef"];
 
-   ("noteon:"++num).postln;
-   ("chan:"++chan).postln;
+   currentInstrument["functions"][0].value(synthdef,num,velocity);
 
 });
 
+
 off = MIDIFunc.noteOff({ |velocity, num, chan, src|
+   var currentPlayer;
+   var currentInstrument;
+   var synthdef;
 
-   switch ( chan,
+   /*[velocity, num, chan, src].postln;*/
 
-   	0,   {
-         polysynth[1].value(\polytest01, num, velocity);
-      },
-
-      9,   {
-         // no noteoff for sampler ?
+   switch(src,
+      1310720, {
+         currentPlayer = ~player1;
       }
-
    );
 
-   ("noteoff:"++num).postln;
-   ("chan:"++chan).postln;
+   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+
+   currentInstrument["functions"][1].value(num);
+
+});
+
+cc = MIDIFunc.cc({ |value, num, chan, src|
+   var currentPlayer;
+   var currentInstrument;
+   var synthdef;
+
+   var startOffset;
+   var parameterIndex;
+   var parameters;
+
+   /*[value, num, chan, src].postln;*/
+
+   switch(src,
+      1310720, {
+         currentPlayer = ~player1;
+      }
+   );
+
+   startOffset = 14;
+
+   // skip one because params come in pairs ( \key, value )
+
+   parameterIndex = ((num - startOffset)*2).postln;
+
+   currentInstrument = currentPlayer["instruments"][currentPlayer["currentInstrument"]];
+
+
+   currentInstrument["parameters"][parameterIndex + 1] = value / 127;
+
+   parameters = currentInstrument["parameters"];
+
+
+   currentPlayer["notes"].collect({|i|
+      i.set(parameters[0],parameters[1]);
+      i.set(parameters[2],parameters[3]);
+      i.set(parameters[4],parameters[5]);
+      i.set(parameters[6],parameters[7]);
+   });
+
+   // TO DO : ALTER CURRENT SYNTHS
 
 });
 
