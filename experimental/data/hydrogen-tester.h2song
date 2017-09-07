@@ -32,9 +32,9 @@
    <FX3Level>0</FX3Level>
    <FX4Level>0</FX4Level>
    <Attack>0</Attack>
-   <Decay>0</Decay>
+   <Decay>16000</Decay>
    <Sustain>1</Sustain>
-   <Release>1000</Release>
+   <Release>13670.3</Release>
    <randomPitchFactor>0</randomPitchFactor>
    <muteGroup>-1</muteGroup>
    <isStopNote>false</isStopNote>
@@ -195,7 +195,7 @@
    <isMuted>false</isMuted>
    <pan_L>1</pan_L>
    <pan_R>1</pan_R>
-   <gain>1</gain>
+   <gain>0.45</gain>
    <filterActive>false</filterActive>
    <filterCutoff>1</filterCutoff>
    <filterResonance>0</filterResonance>
@@ -206,7 +206,7 @@
    <Attack>0</Attack>
    <Decay>0</Decay>
    <Sustain>1</Sustain>
-   <Release>1000</Release>
+   <Release>100256</Release>
    <randomPitchFactor>0</randomPitchFactor>
    <muteGroup>-1</muteGroup>
    <isStopNote>false</isStopNote>
@@ -464,7 +464,7 @@
    <Attack>0</Attack>
    <Decay>0</Decay>
    <Sustain>1</Sustain>
-   <Release>1000</Release>
+   <Release>24882.9</Release>
    <randomPitchFactor>0</randomPitchFactor>
    <muteGroup>-1</muteGroup>
    <isStopNote>false</isStopNote>
@@ -548,9 +548,9 @@
    <FX3Level>0</FX3Level>
    <FX4Level>0</FX4Level>
    <Attack>0</Attack>
-   <Decay>0</Decay>
+   <Decay>39690</Decay>
    <Sustain>1</Sustain>
-   <Release>1000</Release>
+   <Release>93621</Release>
    <randomPitchFactor>0</randomPitchFactor>
    <muteGroup>-1</muteGroup>
    <isStopNote>false</isStopNote>
@@ -593,7 +593,7 @@
    <Attack>0</Attack>
    <Decay>0</Decay>
    <Sustain>1</Sustain>
-   <Release>1000</Release>
+   <Release>70188.3</Release>
    <randomPitchFactor>0</randomPitchFactor>
    <muteGroup>-1</muteGroup>
    <isStopNote>false</isStopNote>

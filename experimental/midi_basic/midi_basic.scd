@@ -13,18 +13,20 @@ on = MIDIFunc.noteOn({ |velocity, num, chan, src|
    var currentInstrumentChannel;
    var synthdef;
 
-   /*[velocity, num, chan, src].postln;*/
+   [velocity, num, chan, src].postln;
 
    switch(src,
-      1310720, {
+      //1310720, { // radium49
+      1572864, {  // axiom 25
          currentPlayer = ~player1;
       }
    );
 
    currentInstrumentChannel = currentPlayer["instruments"][chan];
+   currentInstrumentChannel["currentInstrument"].postln;
    currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
    synthdef = currentInstrument["synthdef"];
-   synthdef.postln;
+   /*synthdef.postln;*/
    currentInstrument["functions"][0].value(synthdef,num,velocity);
 
 });
@@ -39,7 +41,8 @@ off = MIDIFunc.noteOff({ |velocity, num, chan, src|
    /*[velocity, num, chan, src].postln;*/
 
    switch(src,
-      1310720, {
+      //1310720, { // radium49
+      1572864, {  // axiom 25
          currentPlayer = ~player1;
       }
    );
@@ -64,17 +67,18 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
    /*[value, num, chan, src].postln;*/
 
    switch(src,
-      1310720, {
+      //1310720, { // radium49
+      1572864, {  // axiom 25
          currentPlayer = ~player1;
       }
    );
 
-   startOffset = 14;
+   startOffset = 0;
 
    // skip one because params come in pairs ( \key, value )
 
    parameterIndex = ((num - startOffset)*2).postln;
-
+   ("CHAN"++chan).postln;
    currentInstrumentChannel = currentPlayer["instruments"][chan];
    currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 

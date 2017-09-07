@@ -100,18 +100,18 @@
 
 ~player1["instruments"][1].put(0,
    ~player1["createInstrument"].value(
-      "instrument_03",
-      \pwm_synth_low,
+      "drum_01",
+      \drumtest,
       [
-         'width', 0.5,
-         'gain', 0.5,
-         'lfo_amp', 0.1,
-         'lfo_freq', 0.1
+         'res', 0.5,
+         'gain', 1.2,
+         'release', 0.2,
+         'faktor', 1
       ],
       [
          {|synthdef, num, velocity|
 
-            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrumentChannel = ~player1["instruments"][1];
             var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             var parameters;
 
@@ -123,6 +123,32 @@
                currentInstrument["parameters"][6], currentInstrument["parameters"][7]
             ];
 
+            switch(num-36,
+               0, {
+                  synthdef = synthdef ++ '01';
+               },
+               1, {
+                  synthdef = synthdef ++ '02';
+               },
+               2, {
+                  synthdef = synthdef ++ '03';
+               },
+               3, {
+                  synthdef = synthdef ++ '04';
+               },
+               4, {
+                  synthdef = synthdef ++ '05';
+               },
+               5, {
+                  synthdef = synthdef ++ '06';
+               },
+               6, {
+                  synthdef = synthdef ++ '07';
+               },
+               7, {
+                  synthdef = synthdef ++ '08';
+               },
+            );
 
             currentInstrument["notes"][num] = Synth(synthdef, parameters);
 
@@ -130,7 +156,7 @@
 
          },
          {|num|
-            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrumentChannel = ~player1["instruments"][1];
             var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             currentInstrument["notes"][num].release;
          }
@@ -140,18 +166,18 @@
 
 ~player1["instruments"][1].put(1,
    ~player1["createInstrument"].value(
-      "instrument_04",
-      \sinosc_synth_low,
+      "drumtest01",
+      \drumtest,
       [
-         'width', 0.5,
-         'gain', 0.5,
-         'lfo_amp', 0.1,
-         'lfo_freq', 0.1
+         'res', 0.75,
+         'gain', 0.2,
+         'release', 0.6,
+         'faktor', 4
       ],
       [
          {|synthdef, num, velocity|
 
-            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrumentChannel = ~player1["instruments"][1];
             var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             var parameters;
 
@@ -170,7 +196,7 @@
 
          },
          {|num|
-            var currentInstrumentChannel = ~player1["instruments"][0];
+            var currentInstrumentChannel = ~player1["instruments"][1];
             var currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
             currentInstrument["notes"][num].release;
          }
