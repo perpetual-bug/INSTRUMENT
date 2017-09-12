@@ -1,57 +1,63 @@
 (
 
-
 var on, off, cc;
+
+~launchpadSrcId = 1835008;
+~player1SrcId = 1310720;
 
 MIDIClient.init;
 
+~launchpad = {|value, num, chan|
 
-on = MIDIFunc.noteOn({ |velocity, num, chan, src|
+   var x, y;
 
-   var currentPlayer;
-   var currentInstrument;
+   x = num % 16;
+   y = ( num / 16 ).asInteger;
+
+   ~subscribers.do( { arg sub; sub.sendMsg( "/OSCpad/update", x, y, value ); } );
+
+};
+
+~play = {|instrument, toggle, value, num, chan|
+
+   ("play:"++[toggle, instrument["synthdef"],num,value]).postln;
+   if( toggle, {
+      instrument["functions"][0].value(instrument["synthdef"],num,value);
+   }, {
+      instrument["functions"][1].value(num);
+   });
+
+};
+
+~note = {|toggle, value, num, chan,src|
+
    var currentInstrumentChannel;
-   var synthdef;
+   var currentInstrument;
 
-   [velocity, num, chan, src].postln;
+   [value, num, chan, src].postln;
 
    switch(src,
-      //1310720, { // radium49
-      1572864, {  // axiom 25
-         currentPlayer = ~player1;
+      ~launchpadSrcId, {  // launchpad
+         ~launchpad.value(value, num, chan);
+      },
+      ~player1SrcId, {  // axiom 25
+         "improve: play func method?".postln;
+         currentInstrumentChannel = ~player1["instruments"][chan];
+         currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+         ~play.value(currentInstrument, toggle, value, num, chan);
       }
    );
 
-   currentInstrumentChannel = currentPlayer["instruments"][chan];
-   currentInstrumentChannel["currentInstrument"].postln;
-   currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
-   synthdef = currentInstrument["synthdef"];
-   /*synthdef.postln;*/
-   currentInstrument["functions"][0].value(synthdef,num,velocity);
+};
 
+
+on = MIDIFunc.noteOn({|value, num, chan, src|
+   ~note.value(true, value, num, chan, src);
 });
 
 
-off = MIDIFunc.noteOff({ |velocity, num, chan, src|
-   var currentPlayer;
-   var currentInstrument;
-   var currentInstrumentChannel;
-   var synthdef;
-
-   /*[velocity, num, chan, src].postln;*/
-
-   switch(src,
-      //1310720, { // radium49
-      1572864, {  // axiom 25
-         currentPlayer = ~player1;
-      }
-   );
-
-   currentInstrumentChannel = currentPlayer["instruments"][chan];
-   currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
-
-   currentInstrument["functions"][1].value(num);
-
+off = MIDIFunc.noteOff({ |value, num, chan, src|
+   ~note.value(false,value, num, chan, src);
 });
 
 cc = MIDIFunc.cc({ |value, num, chan, src|
@@ -68,7 +74,7 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 
    switch(src,
       //1310720, { // radium49
-      1572864, {  // axiom 25
+      ~player1SrcId, {  // axiom 25
          currentPlayer = ~player1;
       }
    );
@@ -100,16 +106,3 @@ cc = MIDIFunc.cc({ |value, num, chan, src|
 });
 
 )
-
-
-
-/*
-
-~player1["instruments"][0]["currentInstrument"]=0;
-~player1["instruments"][0]["currentInstrument"]=1;
-
-~player1["instruments"][1]["currentInstrument"]=0;
-~player1["instruments"][1]["currentInstrument"]=1;
-
-
-*/
