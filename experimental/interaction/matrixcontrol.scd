@@ -6,7 +6,7 @@
 
          var color;
 
-
+         ("do callback:"++row++","++col).postln;
 
          switch( val,
             0, { color = 0; },

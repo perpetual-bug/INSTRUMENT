@@ -1,7 +1,7 @@
 // callback arrays
 
 /*"model"*/
-~toggles = Array.fill(64, 0);
+~toggles = Array.fill(8, Array.fill(8, 0));
 
 /*"controller"*/
 
@@ -13,19 +13,18 @@
 
          var number;
          var color;
-
-         switch( val,
+         switch( val.asInteger,
             0, { },
             127, {
 
-               number = (row*8)+col;
+               ~toggles[row][col].postln;
 
-               ~toggles[ number ] = (~toggles[ number ]+1) % 2;
 
-               color = ~toggles[ number ] * 7;
+               ~toggles[row][col] = (~toggles[row][col]+1) % 2;
+               color = ~toggles[row][col] * 7;
 
-               /*NetAddr.localAddr.sendMsg( "/OSCpad/set", col, row, color );*/
                NetAddr.localAddr.sendMsg( "/OSCpad/set", col, row, color );
+
 
             }
 

@@ -19,7 +19,7 @@
 var num;
 var col, row, val;
 
-msg.postln;
+("message:"++msg).postln;
 
 col = msg[1].asInteger;
 row = msg[2].asInteger;

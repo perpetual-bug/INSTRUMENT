@@ -12,17 +12,17 @@
  * grid. The top row (the control buttons) have position ( x, -1 ).
  *
  * To control a pad send to /OSCpad/set.
- *     /OSCpad/set : x y colour
+ *     /OSCpad/set : x y color
  *
  * Launchpad updates will be sent to /OSCpad/update.
- *     /OSCpad/update : x y colour
+ *     /OSCpad/update : x y color
  */
 
 /*
- * Array with values of all the colours. The index corresponds with the
+ * Array with values of all the colors. The index corresponds with the
  * value sent in OSC packets.
  */
-~lp_colours = [
+~lp_colors = [
 	0x0C, // 00: OFF
 
 	0x0D, // 01: RED THIRD
@@ -40,7 +40,7 @@
 	0x3F, // 11: AMBER FULL
 	0x3B  // 12: AMBER BLINK
 ];
-~lp_colours_verbose = [
+~lp_colors_verbose = [
 	"OFF",
 	"RED THIRD", "RED HALF", "RED FULL", "RED BLINK",
 	"GREEN THIRD", "GREEN HALF", "GREEN FULL", "GREEN BLINK",
@@ -55,7 +55,7 @@ thisProcess.openPorts.do( { arg item; ( " - " + item ).postln; } );
 
 //***** Unity --> LP *****
 // OSC in, MIDI out
-/*
+
 // find a MIDI destination with Launchpad in the name
 ~lp_name = nil;
 // MIDIClient.init( verbose: false );
@@ -67,7 +67,7 @@ if ( ~lp_name == nil, { "Is there a Launchpad connected?".die; } );
 // connect to Launchpad
 ~lp_send = MIDIOut.newByName( ~lp_name, ~lp_name );
 ( "Connected to " + ~lp_name ).postln;
-*/
+
 /*
  * /OSCpad/subscribe : port
  */
@@ -116,25 +116,26 @@ if ( ~lp_name == nil, { "Is there a Launchpad connected?".die; } );
 );
 
 /*
- * /OSCpad/set : x y colour
+ * /OSCpad/set : x y color
  */
 ~osc_set.free;
 ~osc_set = OSCFunc.newMatching( {
 	arg msg, time, addr, recvPort;
-	var x, y, colour;
+	var x, y, color;
 
 	if ( msg.size() >= 4, {
-		x = msg.at( 1 );
-		y = msg.at( 2 );
-		colour = msg.at( 3 );
+		x = msg.at( 2 );
+		y = msg.at( 1 );
+		color = msg.at( 3 );
 
 		if ( y >= 0, {
-			~lp_send.noteOn( 0, 16*y + x, ~lp_colours[ colour ] );
+			("Set:"++x++","++y++": "++(8*y + x)).postln;
+			~lp_send.noteOn( 0, (16*y + x), ~lp_colors[ color ] );
 		}, {
-			~lp_send.control( 0, 104 + x, ~lp_colours[ colour ] );
+			/*~lp_send.control( 0, 104 + x, ~lp_colors[ color ] );*/
 		} );
 
-//		( "LP: ( " ++ x ++ ", " ++ y ++ " ) " ++ ~lp_colours_verbose[ colour ] ).postln;
+//		( "LP: ( " ++ x ++ ", " ++ y ++ " ) " ++ ~lp_colors_verbose[ color ] ).postln;
 	} );
 
 }, '/OSCpad/set'
@@ -154,13 +155,14 @@ MIDIdef.cc( \ccListener, {
 	~subscribers.do( { arg sub; sub.sendMsg( "/OSCpad/update", x, -1, value ); } );
 } );*/
 
+NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
+
 "";
 
 )
 
 /*
 // send test OSC message
-NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
 
 NetAddr.localAddr.sendMsg( "/OSCpad/set", 4, 3, 12 );
 
