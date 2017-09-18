@@ -17,7 +17,7 @@
             0, { },
             127, {
 
-               ~toggles[row][col].postln;
+               /*~toggles[row][col].postln;*/
 
 
                ~toggles[row][col] = (~toggles[row][col]+1) % 2;

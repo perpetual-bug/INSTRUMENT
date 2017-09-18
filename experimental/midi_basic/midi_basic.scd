@@ -2,13 +2,10 @@
 
 var on, off, cc;
 
-~launchpadSrcId = 1835008;
+var loadMode;
+
+~launchpadSrcId = 1310720;
 ~player1SrcId = 1572864;
-
-~modes = Dictionary.new();
-
-~currentMode = "chooseChannelInstrument";
-
 
 // Activate listeners
 ~menus = Array.fill(2,{
@@ -21,6 +18,10 @@ var on, off, cc;
 
 MIDIClient.init;
 
+~modes = Dictionary.new();
+
+
+
 ~launchpad = {|value, num, chan|
 
 	var x, y;
@@ -28,6 +29,8 @@ MIDIClient.init;
 	x = num % 8;
 	y = ( num / 16 ).asInteger;
 
+	/*[x,y].postln;*/
+	/*~modes[~currentMode].postln;*/
 	~modes[~currentMode][x][y].value(x, y, value);
 
 };
@@ -50,8 +53,8 @@ MIDIClient.init;
 
    /*[src].postln;*/
 
-   /*[value, num, chan, src].postln;
-   */
+   [value, num, chan, src].postln;
+
    switch(src,
       ~launchpadSrcId, {  // launchpad
          ~launchpad.value(value, num, chan);
@@ -67,68 +70,76 @@ MIDIClient.init;
 
 
    on = MIDIFunc.noteOn({|value, num, chan, src|
-["received",num].postln;
+
       ~note.value(true, value, num, chan, src);
 
    });
 
 
-      off = MIDIFunc.noteOff({ |value, num, chan, src|
-         ~note.value(false,value, num, chan, src);
-         });
+   off = MIDIFunc.noteOff({ |value, num, chan, src|
+      ~note.value(false,value, num, chan, src);
+   });
 
-         cc = MIDIFunc.cc({ |value, num, chan, src|
-            var currentPlayer;
-            var currentInstrumentChannel;
-            var currentInstrument;
-            var synthdef;
+   cc = MIDIFunc.cc({ |value, num, chan, src|
+      var currentPlayer;
+      var currentInstrumentChannel;
+      var currentInstrument;
+      var synthdef;
 
-            var startOffset;
-            var parameterIndex;
-            var parameters;
+      var startOffset;
+      var parameterIndex;
+      var parameters;
 
-            /*[value, num, chan, src].postln;*/
+      /*[value, num, chan, src].postln;*/
 
-            switch(src,
+      switch(src,
 
-               ~launchpadSrcId, {
-
-
-               ("launchpad!"++value++", chan:"++chan).postln;
+         ~launchpadSrcId, {
 
 
-               },
-               //1310720, { // radium49
-               ~player1SrcId, {  // axiom 25
-                  currentPlayer = ~player1;
-
-                  startOffset = 0;
-
-                  // skip one because params come in pairs ( \key, value )
-
-                  parameterIndex = ((num - startOffset)*2).postln;
-                  ("CHAN"++chan).postln;
-                  currentInstrumentChannel = currentPlayer["instruments"][chan];
-                  currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+         ("launchpad!"++value++", chan:"++chan).postln;
 
 
-                  currentInstrument["parameters"][parameterIndex + 1] = value / 127;
+         },
+         //1310720, { // radium49
+         ~player1SrcId, {  // axiom 25
+            currentPlayer = ~player1;
 
-                  parameters = currentInstrument["parameters"];
+            startOffset = 0;
 
+            // skip one because params come in pairs ( \key, value )
 
-                  currentInstrument["notes"].collect({|i|
-                     i.set(parameters[0],parameters[1]);
-                     i.set(parameters[2],parameters[3]);
-                     i.set(parameters[4],parameters[5]);
-                     i.set(parameters[6],parameters[7]);
-                     });
-                     // TO DO : ALTER CURRENT SYNTHS
-                  }
-                  );
-
+            parameterIndex = ((num - startOffset)*2).postln;
+            ("CHAN"++chan).postln;
+            currentInstrumentChannel = currentPlayer["instruments"][chan];
+            currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 
 
-                  });
+            currentInstrument["parameters"][parameterIndex + 1] = value / 127;
 
-                  )
+            parameters = currentInstrument["parameters"];
+
+
+            currentInstrument["notes"].collect({|i|
+               i.set(parameters[0],parameters[1]);
+               i.set(parameters[2],parameters[3]);
+               i.set(parameters[4],parameters[5]);
+               i.set(parameters[6],parameters[7]);
+               });
+               // TO DO : ALTER CURRENT SYNTHS
+            }
+            );
+
+
+
+            });
+
+
+
+~launchpad_set = {|col,row,color|
+
+   NetAddr.localAddr.sendMsg( "/OSCpad/set", col, row, color );
+
+}
+
+)

@@ -1,6 +1,13 @@
 (
 var dir;
 
+/*~currentMode = "chooseChannelInstrument";*/
+~currentMode = "two_instruments";
+
+
+~launchpadSrcId = 1310720;
+~player1SrcId = 1572864;
+
 dir = '/home/furenku/Musica/perpetual_bug/INSTRUMENT/experimental/';
 
 
@@ -13,6 +20,10 @@ dir = '/home/furenku/Musica/perpetual_bug/INSTRUMENT/experimental/';
 ( dir ++ 'interaction/player1.scd' ).load;
 
 ( dir ++ 'interaction/oscpad_setup.scd' ).load;
-( dir ++ 'interaction/modes/mode_chooseChannelInstrument.scd' ).load;
+
+( dir ++ 'interaction/devices/deviceCallbacks.scd' ).load;
+
+/*( dir ++ 'interaction/modes/choose_channel_instrument.scd' ).load;*/
+( dir ++ 'interaction/modes/two_instruments.scd' ).load;
 
 )

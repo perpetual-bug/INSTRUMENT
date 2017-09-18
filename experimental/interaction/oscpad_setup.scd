@@ -129,8 +129,7 @@ if ( ~lp_name == nil, { "Is there a Launchpad connected?".die; } );
 		color = msg.at( 3 );
 
 		if ( y >= 0, {
-			("Set:"++x++","++y++": "++(8*y + x)).postln;
-			~lp_send.noteOn( 0, (16*y + x), ~lp_colors[ color ] );
+			~lp_send.noteOn( 0, (16*x + y), ~lp_colors[ color ] );
 		}, {
 			/*~lp_send.control( 0, 104 + x, ~lp_colors[ color ] );*/
 		} );
