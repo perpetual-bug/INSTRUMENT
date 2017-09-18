@@ -37,14 +37,14 @@
          ((channel/2).floor*4)
          +
          j,
-         ~action_type_color[((col%4)%2)+channel%3]+((device+1)%2)
+         ~action_type_color[((col%4)%2)+channel%3]+((device+1)%1)
       );
    };
 
    ~launchpad_set.value(
       col,
       row,
-      ~action_type_color[((col%4)%2)+channel%3]+3
+      ~action_type_color[((col%4)%2)+channel%3]+2
    );
 
 
@@ -86,7 +86,7 @@
             ~launchpad_set.value(
                num%8,
                (num/8).asInteger,
-               ~action_type_color[((i%2)+h)%3]+((i+1)%2)
+               ~action_type_color[((i%2)+h)%3]+((i+1)%1)
             );
 
          };
