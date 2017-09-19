@@ -7,6 +7,21 @@ var loadMode;
 ~launchpadSrcId = 1310720;
 ~player1SrcId = 1572864;
 
+
+
+~playFunc = {|player|
+	var currentInstrumentChannel;
+	var currentInstrument;
+
+	currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+	~play.value(currentInstrument, toggle, value, num, chan);
+};
+
+
+~playerManager.createPlayer.value("furenku-axiom-25",1572864,0);
+~playerManager.createPlayer.value("furenku-axiom-25",1572864,9);
+~playerManager.players
+
 // Activate listeners
 ~menus = Array.fill(2,{
 	Array.fill(8,{
@@ -14,9 +29,8 @@ var loadMode;
 	});
 });
 
-
-
-MIDIClient.init;
+MIDIClient.sources;
+MIDIClient.init(~midiInputs,~midiOutputs);
 
 ~modes = Dictionary.new();
 
@@ -48,8 +62,6 @@ MIDIClient.init;
 
 ~note = {|toggle, value, num, chan,src|
 
-   var currentInstrumentChannel;
-   var currentInstrument;
 
    /*[src].postln;*/
 
@@ -59,12 +71,22 @@ MIDIClient.init;
       ~launchpadSrcId, {  // launchpad
          ~launchpad.value(value, num, chan);
       },
-      ~player1SrcId, {  // axiom 25
+      /*~player1SrcId, {  // axiom 25
          "improve: play func method?".postln;
          currentInstrumentChannel = ~player1["instruments"][chan];
          currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
          ~play.value(currentInstrument, toggle, value, num, chan);
-   });
+   	}*/
+	);
+
+	~players.do{|player|
+
+		if( src, {
+
+
+
+		}, {});
+	};
 
 };
 

@@ -48,6 +48,9 @@
    );
 
 
+   /*set current instrument in channel*/
+
+
 
 };
 
