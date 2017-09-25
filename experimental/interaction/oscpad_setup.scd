@@ -60,7 +60,9 @@ thisProcess.openPorts.do( { arg item; ( " - " + item ).postln; } );
 ~lp_name = nil;
 // MIDIClient.init( verbose: false );
 MIDIClient.destinations.do( {
-	arg item; if ( item.name.find( "Launchpad" ) != nil, { ~lp_name = item.name; } );
+	arg item;
+
+if ( item.name.find( "Launchpad" ) != nil, { ~lp_name = item.name; } );
 } );
 if ( ~lp_name == nil, { "Is there a Launchpad connected?".die; } );
 
@@ -163,7 +165,7 @@ NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
 /*
 // send test OSC message
 
-NetAddr.localAddr.sendMsg( "/OSCpad/set", 4, 3, 12 );
+NetAddr.localAddr.sendMsg( "/OSCpad/set", 4, 3, 7 );
 
 // fake MIDI input
 MIDIIn.doNoteOnAction( 1, 0, 33, 127 );

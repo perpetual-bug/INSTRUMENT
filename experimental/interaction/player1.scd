@@ -2,7 +2,7 @@
 // Create Instruments for Player:
 ~player1 = {
 
-   ~playerManager.newPlayer.value(
+   ~controllerManager.newPlayer.value(
       "Uno"
    );
 
@@ -11,7 +11,7 @@
 
 
 player1.instruments.add(
-   ~playerManager.createInstrument.value(
+   ~controllerManager.createInstrument.value(
       "instrument_01",
       \pwm_synth,
       [

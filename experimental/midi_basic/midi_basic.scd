@@ -5,22 +5,22 @@ var on, off, cc;
 var loadMode;
 
 ~launchpadSrcId = 1310720;
-~player1SrcId = 1572864;
+~controller1SrcId = 1572864;
 
 
 
-~playFunc = {|player|
+/*~playFunc = {|controller|
 	var currentInstrumentChannel;
 	var currentInstrument;
 
 	currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 	~play.value(currentInstrument, toggle, value, num, chan);
-};
+};*/
 
 
-~playerManager.createPlayer.value("furenku-axiom-25",1572864,0);
-~playerManager.createPlayer.value("furenku-axiom-25",1572864,9);
-~playerManager.players
+~controllerManager["createController"].value("furenku-axiom-25",1572864,0);
+~controllerManager["createController"].value("furenku-axiom-25",1572864,9);
+/*~controllerManager.controllers*/
 
 // Activate listeners
 ~menus = Array.fill(2,{
@@ -29,12 +29,12 @@ var loadMode;
 	});
 });
 
-MIDIClient.sources;
+
 MIDIClient.init(~midiInputs,~midiOutputs);
 
 ~modes = Dictionary.new();
 
-
+~modes.postln;
 
 ~launchpad = {|value, num, chan|
 
@@ -71,15 +71,9 @@ MIDIClient.init(~midiInputs,~midiOutputs);
       ~launchpadSrcId, {  // launchpad
          ~launchpad.value(value, num, chan);
       },
-      /*~player1SrcId, {  // axiom 25
-         "improve: play func method?".postln;
-         currentInstrumentChannel = ~player1["instruments"][chan];
-         currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
-         ~play.value(currentInstrument, toggle, value, num, chan);
-   	}*/
 	);
 
-	~players.do{|player|
+	~controllers.do{|controller|
 
 		if( src, {
 
@@ -103,7 +97,7 @@ MIDIClient.init(~midiInputs,~midiOutputs);
    });
 
    cc = MIDIFunc.cc({ |value, num, chan, src|
-      var currentPlayer;
+      var currentController;
       var currentInstrumentChannel;
       var currentInstrument;
       var synthdef;
@@ -124,8 +118,8 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
          },
          //1310720, { // radium49
-         ~player1SrcId, {  // axiom 25
-            currentPlayer = ~player1;
+         ~controller1SrcId, {  // axiom 25
+            currentController = ~controller1;
 
             startOffset = 0;
 
@@ -133,7 +127,7 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
             parameterIndex = ((num - startOffset)*2).postln;
             ("CHAN"++chan).postln;
-            currentInstrumentChannel = currentPlayer["instruments"][chan];
+            currentInstrumentChannel = currentController["instruments"][chan];
             currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 
 

@@ -15,6 +15,7 @@ SynthDef(\polytest01,{|freq=440,gate=1,amp=0.5|
 
 }).add;
 
+
 SynthDef(\pwm_synth,{|freq=440, gate=1, amp=0.5, width=1, gain=0.5, lfo_amp=0.1, lfo_freq=0.1|
 
    var sig, env;

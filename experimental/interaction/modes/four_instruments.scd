@@ -116,4 +116,4 @@
 
 
 
-~modes["two_instruments"] = ~callbacks;
+~modes["four_instruments"] = ~callbacks;
