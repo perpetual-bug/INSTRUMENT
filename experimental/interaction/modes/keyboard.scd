@@ -24,6 +24,7 @@
 var color;
                   ~modeNotes[num].release;
 if( num % 12 != 0, { color = 0; }, { color=5; });
+if( (num) % 12 != 7, { color = color; }, { color=1; });
 
                   ~launchpad_set.value(
                      col,
@@ -33,7 +34,7 @@ if( num % 12 != 0, { color = 0; }, { color=5; });
          },
          127, {
 
-               ~modeNotes[num] = Synth(\polytest01,[\freq, (24+num).midicps]);
+               ~modeNotes[num] = Synth(\sinosc_synth,[\freq, (48+num).midicps, \amp, 0.5, \gain, 1]);
 
 
                ~launchpad_set.value(
@@ -76,6 +77,15 @@ var num = (h-3);
             y = ((h) / 8).asInteger;
 
             ~launchpad_set.value(x,y,5);
+
+         }, {});
+         if( (h + 7) % 12 == 0, {
+            var x, y;
+
+            x = (8-(h % 8))-3;
+            y = ((h) / 8).asInteger;
+
+            ~launchpad_set.value(x,y,1);
 
          }, {});
 

@@ -3,7 +3,7 @@
 var dir;
 
 /*~currentMode = "chooseChannelInstrument";*/
-~currentMode = "play_notes";
+~currentMode = "keyboard";
 
 
 ~launchpadSrcId = 1310720;
