@@ -98,4 +98,4 @@ var num = (h-3);
 
 
 
-   ~modes["play_notes"] = ~callbacks;
+   ~modes["keyboard"] = ~callbacks;

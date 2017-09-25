@@ -32,7 +32,7 @@ dir = '/home/furenku/Musica/perpetual_bug/INSTRUMENT/experimental/';
 ( dir ++ 'interaction/devices/deviceCallbacks.scd' ).load;*/
 
 /*( dir ++ 'interaction/modes/choose_channel_instrument.scd' ).load;*/
-( dir ++ 'interaction/modes/play_notes.scd' ).load;
+( dir ++ 'interaction/modes/keyboard.scd' ).load;
 
 
 ~launchpad_setup.value();
