@@ -165,7 +165,7 @@ NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
 /*
 // send test OSC message
 
-NetAddr.localAddr.sendMsg( "/OSCpad/set", 4, 3, 7 );
+NetAddr.localAddr.sendMsg( "/OSCpad/set", 8, 3, 7 );
 
 // fake MIDI input
 MIDIIn.doNoteOnAction( 1, 0, 33, 127 );

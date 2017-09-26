@@ -40,12 +40,17 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
 	var x, y;
 
-	x = num % 8;
 	y = ( num / 16 ).asInteger;
+	x = (num-(y*16))%9;
+
+
+	~modes[~currentMode][x][y].value(x, y, value);
+
+
+
 
 	/*[x,y].postln;*/
 	/*~modes[~currentMode].postln;*/
-	~modes[~currentMode][x][y].value(x, y, value);
 
 };
 
@@ -59,6 +64,8 @@ MIDIClient.init(~midiInputs,~midiOutputs);
    });
 
 };
+
+
 
 ~note = {|toggle, value, num, chan,src|
 
