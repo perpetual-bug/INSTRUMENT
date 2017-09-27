@@ -12,6 +12,12 @@
 ~tmpKeyboardSynthdefs[0] = [\sinosc_synth,\sinosc_synth_low,\pwm_synth,\pwm_synth_low];
 ~tmpKeyboardSynthdefs[1] = [\moogNoise,\rlpfNoise,\bpfNoise,\resonzNoise];
 
+
+~black_keys = [1,3,6,8,10];
+
+
+
+
 ~instrumentMenuCallback = {|col, row, val|
 
    var instrument = (row / 4).floor;
@@ -88,43 +94,6 @@
 
 
 
-~actions = Array.newClear(4);
-
-~actions[0] = ~instrumentCallback;
-~actions[1] = ~fxCallback;
-~actions[2] = ~mixCallback;
-~actions[3] = ~loopCallback;
-
-
-~launchpad_setup = {
-
-   NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
-
-   ~black_keys = [1,3,6,8,10];
-
-   2.do {|h|
-      32.do {|i|
-         var x, y;
-         var color;
-         x = (i % 4) + (h*4);
-         y = 7-((i) / 4).asInteger;
-
-
-         color = 1+(h*8);
-
-         if( ~black_keys.includes(i % 12), { color = 11-(h*4); },{});
-
-         ~launchpad_set.value(x,y,color)
-
-      };
-   };
-
-   "";
-
-};
-
-
-
 
 ~callbacks = Array.fill(9, {|h|
 
@@ -149,10 +118,43 @@
 });
 
 
+~modes["two_keyboards"] = Dictionary.new();
 
-~modes["two_keyboards"] = ~callbacks;
+~modes["two_keyboards"]["launchpad"] = Dictionary.new();
 
-~launchpad_setup.value();
 
-~instrumentMenuCallback.value(8,0,127);
-~instrumentMenuCallback.value(8,4,127);
+~modes["two_keyboards"]["init"] = {
+
+   ~modes["two_keyboards"]["launchpad"]["setup"].value();
+
+   ~instrumentMenuCallback.value(8,0,127);
+   ~instrumentMenuCallback.value(8,4,127);
+
+};
+
+~modes["two_keyboards"]["launchpad"]["setup"] = {
+
+   NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
+
+   2.do {|h|
+      32.do {|i|
+         var x, y;
+         var color;
+         x = (i % 4) + (h*4);
+         y = 7-((i) / 4).asInteger;
+
+
+         color = 1+(h*8);
+
+         if( ~black_keys.includes(i % 12), { color = 11-(h*4); },{});
+
+         ~launchpad_set.value(x,y,color)
+
+      };
+   };
+
+   "";
+
+};
+
+~modes["two_keyboards"]["launchpad"]["callbacks"] = ~callbacks;

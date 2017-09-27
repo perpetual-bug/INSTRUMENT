@@ -33,13 +33,7 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 	x = (num-(y*16))%9;
 
 
-	~modes[~currentMode][x][y].value(x, y, value);
-
-
-
-
-	/*[x,y].postln;*/
-	/*~modes[~currentMode].postln;*/
+	~modes[~currentMode]["launchpad"]["callbacks"][x][y].value(x, y, value);
 
 };
 
@@ -90,6 +84,8 @@ MIDIClient.init(~midiInputs,~midiOutputs);
    cc = MIDIFunc.cc({ |value, num, chan, src|
 
 		var ccNum = num-104;
+
+["Ccnum",ccNum].postln;
 
 		switch(value,
 			0, {

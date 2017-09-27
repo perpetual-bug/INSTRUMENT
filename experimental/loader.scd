@@ -5,7 +5,7 @@
 
       ().play;
       /*~currentMode = "chooseChannelInstrument";*/
-      ~currentMode = "two_keyboards";
+      ~currentMode = "mode_0";
 
       ~clock = 0;
       ~menuClockTime = 0;
@@ -40,9 +40,13 @@
       ( dir ++ 'interaction/devices/deviceCallbacks.scd' ).load;*/
 
       /*( dir ++ 'interaction/modes/choose_channel_instrument.scd' ).load;*/
+      ( dir ++ 'interaction/modes/mode_0.scd' ).load;
       ( dir ++ 'interaction/modes/two_keyboards.scd' ).load;
 
       ( dir ++ 'interaction/clocks/main_clock.scd' ).load;
+
+
+      ~menuManager["load_mode"].value( ~currentMode );
 
 
       ""
