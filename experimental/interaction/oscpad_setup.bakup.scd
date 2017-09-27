@@ -186,7 +186,7 @@ MIDIdef.cc( \ccListener, {
 // send test OSC message
 NetAddr.localAddr.sendMsg( "/OSCpad/reset" );
 
-NetAddr.localAddr.sendMsg( "/OSCpad/set", 4, 3, 12 );
+NetAddr.localAddr.sendMsg( "/OSCpad/set", 0, -1, 0 );
 
 // fake MIDI input
 MIDIIn.doNoteOnAction( 1, 0, 33, 127 );

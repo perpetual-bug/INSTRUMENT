@@ -88,28 +88,53 @@ MIDIClient.init(~midiInputs,~midiOutputs);
    });
 
    cc = MIDIFunc.cc({ |value, num, chan, src|
+      var currentController;
+      var currentInstrumentChannel;
+      var currentInstrument;
+      var synthdef;
 
-		var ccNum = num-104;
+      var startOffset;
+      var parameterIndex;
+      var parameters;
 
-		switch(value,
-			0, {
-				if( ~menuClockTime > 0, {
-					~launchpad_set.value(-1,ccNum,0);
-				}, {});
-				~menuClockTime = 0;
-			},
-			127, {
-				["cc",ccNum].postln;
-				~launchpad_set.value(-1,ccNum,6);
 
-				// start holding
-				~menuClockTime = ~clock+1;
-				~selectingMenu = ccNum;
+      switch(src,
 
-			}
-		);
+         ~launchpadSrcId, {
 
-   });
+         },
+         //1310720, { // radium49
+         ~controller1SrcId, {  // axiom 25
+            currentController = ~controller1;
+
+            startOffset = 0;
+
+            // skip one because params come in pairs ( \key, value )
+
+            parameterIndex = ((num - startOffset)*2).postln;
+
+            currentInstrumentChannel = currentController["nodes"][chan];
+            currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
+
+
+            currentInstrument["parameters"][parameterIndex + 1] = value / 127;
+
+            parameters = currentInstrument["parameters"];
+
+
+            currentInstrument["notes"].collect({|i|
+               i.set(parameters[0],parameters[1]);
+               i.set(parameters[2],parameters[3]);
+               i.set(parameters[4],parameters[5]);
+               i.set(parameters[6],parameters[7]);
+               });
+               // TO DO : ALTER CURRENT SYNTHS
+            }
+            );
+
+
+
+            });
 
 
 

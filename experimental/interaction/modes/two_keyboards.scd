@@ -23,7 +23,7 @@
       if( i != (row%4), {
          color = 0;
       }, {
-         color = 3;
+         color = 3+(instrument*4);
       });
       ~launchpad_set.value(
          8,
