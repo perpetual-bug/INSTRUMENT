@@ -5,7 +5,7 @@
 
       ().play;
       /*~currentMode = "chooseChannelInstrument";*/
-      ~currentMode = "keyboard";
+      ~currentMode = "two_keyboards";
 
 
       ~launchpadSrcId = 1310720;
@@ -34,7 +34,7 @@
       ( dir ++ 'interaction/devices/deviceCallbacks.scd' ).load;*/
 
       /*( dir ++ 'interaction/modes/choose_channel_instrument.scd' ).load;*/
-      ( dir ++ 'interaction/modes/keyboard.scd' ).load;
+      ( dir ++ 'interaction/modes/two_keyboards.scd' ).load;
 
 
 

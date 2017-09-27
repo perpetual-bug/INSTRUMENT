@@ -34,8 +34,6 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
 ~modes = Dictionary.new();
 
-~modes.postln;
-
 ~launchpad = {|value, num, chan|
 
 	var x, y;
@@ -56,7 +54,6 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
 ~play = {|instrument, toggle, value, num, chan|
 
-   ("play:"++[toggle, instrument["synthdef"],num,value]).postln;
    if( toggle, {
       instrument["functions"][0].value(instrument["synthdef"],num,value);
    }, {
@@ -69,10 +66,6 @@ MIDIClient.init(~midiInputs,~midiOutputs);
 
 ~note = {|toggle, value, num, chan,src|
 
-
-   /*[src].postln;*/
-
-   [value, num, chan, src].postln;
 
    switch(src,
       ~launchpadSrcId, {  // launchpad
@@ -113,15 +106,10 @@ MIDIClient.init(~midiInputs,~midiOutputs);
       var parameterIndex;
       var parameters;
 
-      /*[value, num, chan, src].postln;*/
 
       switch(src,
 
          ~launchpadSrcId, {
-
-
-         ("launchpad!"++value++", chan:"++chan).postln;
-
 
          },
          //1310720, { // radium49
@@ -133,7 +121,7 @@ MIDIClient.init(~midiInputs,~midiOutputs);
             // skip one because params come in pairs ( \key, value )
 
             parameterIndex = ((num - startOffset)*2).postln;
-            ("CHAN"++chan).postln;
+            
             currentInstrumentChannel = currentController["instruments"][chan];
             currentInstrument = currentInstrumentChannel[currentInstrumentChannel["currentInstrument"]];
 
